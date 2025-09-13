@@ -2,14 +2,18 @@ import { Box, Typography } from "@mui/material"
 import Link from "next/link"
 import SailingIcon from "@mui/icons-material/Sailing";
 
-const Logo = () => {
+interface LogoProps {
+    color?: string;
+}
+
+const Logo = ({ color = "primary"}: LogoProps) => {
     return (
         <Box sx={{}}>
             <Typography
               variant="h6"
               component={Link}
               href="/"
-              color="primary"
+              color={color}
               sx={{
                 textDecoration: "none",
                 fontWeight: "bold",
@@ -19,7 +23,7 @@ const Logo = () => {
                 gap: 1,
               }}
             >
-              <SailingIcon color="primary" />
+              <SailingIcon sx={{ color: color}} />
               TravelBuka
             </Typography>
           </Box>

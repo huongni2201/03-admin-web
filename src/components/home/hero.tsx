@@ -20,7 +20,7 @@ export default function HeroSession() {
           alt="Travel Banner"
           width={1920}
           height={600}
-          style={{ width: "100%", height: "auto", objectFit: "cover" }}
+          style={{ width: "100%", height: "600px", objectFit: "cover" }}
           priority
         />
 

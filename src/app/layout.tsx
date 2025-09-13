@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { CssBaseline } from "@mui/material";
-import Footer from "@/components/layouts/Footer";
 import ThemeRegistry from "@/components/providers/ThemeRegistry";
 import Header from "@/components/common/header";
+import Footer from "@/components/common/footer";
 
 export const metadata: Metadata = {
   title: "Travel Booking",
