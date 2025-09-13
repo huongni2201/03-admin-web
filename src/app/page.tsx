@@ -1,10 +1,12 @@
-import { Button } from "@mui/material";
+"use client";
 
-export default function Home() {
+import HeroSession from "@/components/home/hero";
+import { Stack } from "@mui/material";
+
+export default function HomePage() {
   return (
-    <div>Hello World NextJS!
-
-      <Button variant="contained">Contained</Button>
-    </div>
+    <Stack spacing={3} alignItems="center" textAlign="center">
+      <HeroSession />
+    </Stack>
   );
 }
