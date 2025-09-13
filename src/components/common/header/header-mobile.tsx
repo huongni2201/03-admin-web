@@ -12,7 +12,7 @@ const HeaderMobile = () => {
         sx={{ backgroundColor: "white", color: "black" }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Logo />
+          <Logo color="primary" />
 
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <MenuIcon />
