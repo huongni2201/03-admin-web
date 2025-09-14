@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Container, Toolbar } from "@mui/material";
 import React from "react";
-import Logo from "../logo/logo";
 import MenuIcon from '@mui/icons-material/Menu';
+import Logo from "@/components/ui/Logo";
 
 const HeaderMobile = () => {
   return (
@@ -12,7 +12,7 @@ const HeaderMobile = () => {
         sx={{ backgroundColor: "white", color: "black" }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Logo color="primary" />
+          <Logo />
 
           <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <MenuIcon />

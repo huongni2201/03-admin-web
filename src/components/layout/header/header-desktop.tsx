@@ -3,11 +3,11 @@
 import { AppBar, Box, Button, Container, Toolbar } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import Logo from "../logo/logo";
 import { ROUTE_LIST } from "./route";
 import MuiLink from "@mui/material/Link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
+import Logo from "@/components/ui/Logo";
 
 const HeaderDesktop = () => {
     const pathname = usePathname();

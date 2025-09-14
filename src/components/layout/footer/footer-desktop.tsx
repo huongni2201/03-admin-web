@@ -11,8 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import Logo from "../logo/logo";
 import { FOOTER_COLUMNS } from "./route";
+import Logo from "@/components/ui/Logo";
 
 const FooterDesktop = () => {
   return (
@@ -51,8 +51,6 @@ const FooterDesktop = () => {
               </List>
             </Grid>
           ))}
-
-          {/* Column 2 */}
 
           {/* Column 3 */}
           <Grid size={{ xs: 12, md: 6, lg: 3 }}>

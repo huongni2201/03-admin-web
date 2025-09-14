@@ -1,6 +1,6 @@
 "use client";
 
-import HeroSession from "@/components/home/hero";
+import HeroSession from "@/features/home/components/hero";
 import { Stack } from "@mui/material";
 
 export default function HomePage() {
