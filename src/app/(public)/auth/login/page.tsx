@@ -1,61 +1,49 @@
 "use client";
 
 import { useLogin } from "@/features/auth/hooks/useLogin";
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import React from "react";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import PasswordField from "@/components/ui/PasswordField";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  LoginFormValues,
+  loginSchema,
+} from "@/features/auth/schemas/loginSchema";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const { login, loading } = useLogin();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  })
-  const [showPassword, setShowPassword] = useState(false);
+  const { handleLoginSubmit, loading } = useLogin();
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: yupResolver(loginSchema),
+  });
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const res = await login(formData);
-    if (res) {
-      console.log("Login success: ", res);
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      const res = await handleLoginSubmit(data);
+      if (!res) return;
+      console.log("Login success", res);
+      toast.success("Đăng nhập thành công!")
+      router.push("/");
+    } catch (err) {
+      setError("root", { type: "server", message: err as string });
     }
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         py: "96px",
         px: "120px",
@@ -72,40 +60,29 @@ export default function LoginPage() {
       <Typography sx={{ color: "text.secondary", mb: 3 }}>
         Login with Email
       </Typography>
+
+      {errors.root && (
+        <Typography color="error" sx={{ mt: 1, fontSize: 16, display: "flex", alignItems: "center", gap: 1 }}>
+          <ErrorOutlineIcon/> {errors.root.message}
+        </Typography>
+      )}
+
       <TextField
         label="Email"
-        type="email"
+        type="text"
         fullWidth
         margin="normal"
-        value={formData.email}
-        onChange={handleChangeInput}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        {...register("email")}
       />
 
-      <FormControl variant="outlined" fullWidth margin="normal">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
-          onChange={handleChangeInput}
-          name="password"
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label={
-                  showPassword ? "hide the password" : "display the password"
-                }
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                onMouseUp={handleMouseUpPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Password"
-        />
-      </FormControl>
+      <PasswordField
+        label="Mật khẩu"
+        error={!!errors.password}
+        helperText={errors.password?.message}
+        {...register("password")}
+      />
 
       <Typography
         sx={{

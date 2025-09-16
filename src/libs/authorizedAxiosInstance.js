@@ -1,8 +1,7 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import Cookies from "js-cookie";
-// import { postLogout, refreshTokenAPI } from "../services/authService";
 import { BASE_URL } from "@/constants";
+import { toast } from "react-hot-toast";
 
 const authorizedAxiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -48,11 +47,6 @@ authorizedAxiosInstance.interceptors.response.use(
             }
 
             return refreshTokenPromise.then(() => authorizedAxiosInstance(originalRequest));
-        }
-
-        // Không phải lỗi token, hiển thị toast
-        if (error.response?.status !== 400) {
-            toast.error(error.response?.data?.message || error.message);
         }
 
         return Promise.reject(error);

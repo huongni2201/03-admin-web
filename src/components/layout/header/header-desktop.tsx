@@ -14,7 +14,7 @@ const HeaderDesktop = () => {
 
 
   return (
-    <Box display={{ xs: "none", lg: "block" }}>
+    <Box display={{ xs: "none", lg: "block", borderBottom: "1px solid #e2e2e2ff" }}>
       <AppBar
         position="static"
         elevation={0}
