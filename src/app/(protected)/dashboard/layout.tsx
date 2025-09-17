@@ -1,16 +1,9 @@
-import type { Metadata } from "next";
-import { CssBaseline } from "@mui/material";
+import Sidebar from "@/components/dashboard/Sidebar";
 import ThemeRegistry from "@/components/providers/ThemeRegistry";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { Toaster } from "react-hot-toast";
 
-export const metadata: Metadata = {
-  title: "Travel Booking",
-  description: "Your world of joy",
-};
-
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -20,7 +13,17 @@ export default function RootLayout({
       <body suppressHydrationWarning>
         <ThemeRegistry>
           <CssBaseline />
-          {children}
+          <Box sx={{ display: "flex" }}>
+            {/* Sidebar */}
+            <Sidebar />
+
+            {/* Nội dung chính */}
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+              {/* Giữ khoảng trống để không đè Toolbar */}
+              <Toolbar />
+              {children}
+            </Box>
+          </Box>
 
           <Toaster
             position="top-right"
