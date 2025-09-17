@@ -14,7 +14,7 @@ export default function AuthLayout({
   const isLogin = pathname.includes("login");
 
   return (
-    <Container sx={{ py: 5 }}>
+    <Container sx={{ py: 3 }}>
       <Stack
         sx={{
           borderRadius: "16px",

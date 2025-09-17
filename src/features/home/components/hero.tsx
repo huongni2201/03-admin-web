@@ -12,7 +12,6 @@ export default function HeroSession() {
           borderRadius: 2,
           overflow: "hidden",
           position: "relative",
-          clipPath: "polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 88%)",
         }}
       >
         <Image
@@ -55,6 +54,23 @@ export default function HeroSession() {
             </Stack>
           </Box>
         </Box>
+
+        <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: "100vw",
+          height: 40
+        }}
+      >
+        <Image
+          src="/images/wave-decoration-vertical.png"
+          alt="Decoration"
+          fill
+          style={{ objectFit: "contain" }}
+        />
+      </Box>
       </Box>
   );
 }

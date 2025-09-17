@@ -1,22 +1,26 @@
 import { useState } from "react";
-import { RegisterRequest, RegisterResponse } from "../types";
+import { IApiError, RegisterRequest, RegisterResponse } from "../types";
 import { registerApi } from "../services/authApi";
+import { AxiosError } from "axios";
 
 export function useRegister() {
     const [loading, setLoading] = useState(false);
 
-    const register = async (data: RegisterRequest): Promise<RegisterResponse | null> => {
+    const handleRegisterSubmit = async (data: RegisterRequest): Promise<RegisterResponse | null> => {
+        setLoading(true);
         try {
-            setLoading(true);
             const res = await registerApi(data);
             return res.data;
-        } catch (err) {
-            console.error("Register failed", err);
-            return null;
+        } catch (error) {
+            const axiosError = error as AxiosError<IApiError>;
+            if (axiosError.response?.data?.message) {
+                throw axiosError.response.data.message;
+            }
+            throw "Đăng ký thất bại, vui lòng thử lại....";
         } finally {
             setLoading(false);
         }
     }
 
-    return { register, loading };
+    return { handleRegisterSubmit, loading };
 }

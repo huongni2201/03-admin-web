@@ -39,3 +39,11 @@ export interface IRegisterForm {
     password: string;
     confirmPassword: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IApiError<T = any> {
+    statusCode: number;
+    error: string;
+    message: string;
+    data?: T;
+}

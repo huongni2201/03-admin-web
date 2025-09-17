@@ -1,71 +1,50 @@
 "use client";
 
 import { useRegister } from "@/features/auth/hooks/useRegister";
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { IRegisterForm } from "@/features/auth/types";
+import React from "react";
+import PasswordField from "@/components/ui/PasswordField";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import {
+  registerSchema,
+  RegisterFormValues,
+} from "@/features/auth/schemas/registerSchema";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
-  const { register, loading } = useRegister();
-  const [formData, setFormData] = useState<IRegisterForm>({
-    fullName: "",
-    phone: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+  const { handleRegisterSubmit, loading } = useRegister();
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: yupResolver(registerSchema),
   });
-  const [showPassword, setShowPassword] = useState(false);
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      alert("Mật khẩu xác nhận không khớp");
-      return;
-    }
-
-    const res = await register(formData);
-    if (res) {
-      console.log("Register success: ", res);
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      const res = await handleRegisterSubmit(data);
+      if (!res) return;
+      toast.success("Register success!")
+      router.push("/auth/login")
+      console.log("Register success", res);
+    } catch (err) {
+      setError("root", { type: "server", message: err as string });
     }
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         py: "96px",
         px: "120px",
@@ -83,93 +62,72 @@ export default function RegisterPage() {
         Register with Email
       </Typography>
 
+      {errors.root && (
+        <Typography
+          color="error"
+          sx={{
+            mt: 1,
+            fontSize: 16,
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <ErrorOutlineIcon /> {errors.root.message}
+        </Typography>
+      )}
+
       <TextField
-        name="fullName"
         label="Full Name"
-        type="text"
         fullWidth
         margin="normal"
-        value={formData.fullName}
-        onChange={handleChangeInput}
+        size="small"
+        {...register("fullName")}
+        error={!!errors.fullName}
+        helperText={errors.fullName?.message}
       />
 
       <TextField
-        name="phone"
         label="Phone"
+        fullWidth
+        margin="normal"
+        size="small"
+        {...register("phone")}
+        error={!!errors.phone}
+        helperText={errors.phone?.message}
+      />
+
+      <TextField
+        label="Email"
         type="text"
         fullWidth
         margin="normal"
-        value={formData.phone}
-        onChange={handleChangeInput}
+        size="small"
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
       />
 
-      <TextField
-        name="email"
-        label="Email"
-        type="email"
-        fullWidth
-        margin="normal"
-        value={formData.email}
-        onChange={handleChangeInput}
-      />
-      <FormControl variant="outlined" fullWidth margin="normal">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
-          onChange={handleChangeInput}
-          name="password"
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label={
-                  showPassword ? "hide the password" : "display the password"
-                }
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                onMouseUp={handleMouseUpPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Password"
-        />
-      </FormControl>
-
-      <TextField
-        name="confirmPassword"
-        label="Confirm password"
-        type="password"
-        fullWidth
-        margin="normal"
-        value={formData.confirmPassword}
-        onChange={handleChangeInput}
+      <PasswordField
+        label="Password"
+        {...register("password")}
+        error={!!errors.password}
+        helperText={errors.password?.message}
       />
 
-      <Typography
-        sx={{
-          alignSelf: "flex-end",
-          mt: 2,
-          fontSize: "14px",
-          cursor: "pointer",
-          color: "text.secondary",
-        }}
-      >
-        Forgot your password?
-      </Typography>
+      <PasswordField
+        label="Confirm Password"
+        {...register("confirmPassword")}
+        error={!!errors.confirmPassword}
+        helperText={errors.confirmPassword?.message}
+      />
 
       <Button
         type="submit"
         variant="contained"
         color="primary"
         disabled={loading}
-        sx={{
-          mt: 3,
-          textDecoration: "uppercase",
-          padding: "10px 32px",
-        }}
+        sx={{ mt: 3, textTransform: "uppercase", px: 4, py: 1.2 }}
       >
         {loading ? "Loading..." : "Register"}
       </Button>
@@ -192,34 +150,23 @@ export default function RegisterPage() {
         </Typography>
       </Typography>
 
+      {/* Decoration images */}
       <Image
         src="/images/login-deconration-plane.png"
         alt="Travelista Tours"
         width={224}
         height={48}
-        style={{
-          objectFit: "cover",
-          position: "absolute",
-          top: 40,
-          right: 0,
-        }}
+        style={{ objectFit: "cover", position: "absolute", top: 40, right: 0 }}
         priority
       />
-
       <Image
         src="/images/login-deconration-02.png"
         alt="Travelista Tours"
         width={192}
         height={112}
-        style={{
-          objectFit: "cover",
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-        }}
+        style={{ objectFit: "cover", position: "absolute", bottom: 0, left: 0 }}
         priority
       />
-
       <Image
         src="/images/login-deconration-01.png"
         alt="Travelista Tours"
