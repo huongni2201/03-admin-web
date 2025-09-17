@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const drawerWidth = 240;
+const drawerWidth: number = 240;
 
 const menuItems = [
   { name: "Overview", href: "/dashboard" },
@@ -23,14 +23,18 @@ const menuItems = [
   { name: "Settings", href: "/dashboard/settings" },
 ];
 
-export default function Sidebar() {
+type SidebarProp = {
+  drawerWidth: number
+}
+
+export default function Sidebar({ drawerWidth}: SidebarProp) {
   const pathname = usePathname();
 
   return (
     <Drawer
       variant="permanent"
       sx={{
-        width: drawerWidth,
+        width: "drawerWidth",
         flexShrink: 0,
         [`& .MuiDrawer-paper`]: {
           width: drawerWidth,
