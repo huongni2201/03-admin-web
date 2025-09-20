@@ -1,6 +1,6 @@
 'use client'
 
-import Sidebar from "@/components/dashboard/Sidebar";
+import Sidebar from "@/components/layout/dashboard/Sidebar";
 import { Box, Grid, Toolbar } from "@mui/material";
 
 export default function DashboardLayout({
