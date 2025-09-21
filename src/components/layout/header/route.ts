@@ -8,7 +8,7 @@ export const ROUTE_LIST = [
         path: '/about',
     },
     {
-        label: 'Booking',
-        path: '/booking',
+        label: 'Bookings',
+        path: '/bookings',
     }
 ]

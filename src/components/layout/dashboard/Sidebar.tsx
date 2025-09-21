@@ -7,16 +7,21 @@ import {
   Drawer,
   List,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import { Tour } from "@mui/icons-material";
+import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+import GroupIcon from "@mui/icons-material/Group";
 
 const menuItems = [
-  { name: "Overview", url: "/dashboard" },
-  { name: "Tours", url: "/dashboard/tours" },
-  { name: "Bookings", url: "/dashboard/bookings" },
-  { name: "Users", url: "/dashboard/users" },
+  { name: "Overview", url: "/dashboard", icon: HomeIcon },
+  { name: "Tours", url: "/dashboard/tours", icon: Tour },
+  { name: "Bookings", url: "/dashboard/bookings", icon: AddToPhotosIcon },
+  { name: "Users", url: "/dashboard/users", icon: GroupIcon },
   { name: "Reports", url: "/dashboard/reports" },
   { name: "Settings", url: "/dashboard/settings" },
 ];
@@ -52,7 +57,7 @@ export default function Sidebar({ drawerWidth }: SidebarProp) {
           Travel Admin
         </Typography>
       </Toolbar>
-      <List sx={{ padding: 3}}>
+      <List sx={{ padding: 3 }}>
         {menuItems.map((item) => (
           <ListItemButton
             key={item.url}
@@ -63,6 +68,7 @@ export default function Sidebar({ drawerWidth }: SidebarProp) {
               "&.Mui-selected": {
                 backgroundColor: "primary.main",
                 color: "white",
+                "& .MuiListItemIcon-root": { color: "white" },
               },
               "&.Mui-selected:hover": {
                 backgroundColor: "primary.main",
@@ -70,12 +76,18 @@ export default function Sidebar({ drawerWidth }: SidebarProp) {
               "&:hover": {
                 backgroundColor: "primary.main",
                 color: "white",
+                "& .MuiListItemIcon-root": { color: "white" },
               },
               mt: 1,
               borderRadius: "8px",
-              overflow: "hidden"
+              overflow: "hidden",
             }}
           >
+            {item.icon && (
+              <ListItemIcon sx={{ minWidth: "35px" }}>
+                <item.icon />
+              </ListItemIcon>
+            )}
             <ListItemText primary={item.name} />
           </ListItemButton>
         ))}

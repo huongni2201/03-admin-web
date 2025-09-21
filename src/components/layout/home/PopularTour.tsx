@@ -1,4 +1,4 @@
-import TourCard from "@/components/ui/tour-card";
+import TourCard from "@/components/layout/home/TourCard";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
